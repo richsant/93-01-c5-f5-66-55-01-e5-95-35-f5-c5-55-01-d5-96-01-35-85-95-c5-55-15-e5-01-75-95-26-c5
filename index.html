@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para Nicole 🎂</title>
+<!--
+  ═══════════════════════════════════════════════════════════════
+  HOW TO SET YOUR REAL DATE + MESSAGE (takes 1 minute):
+  1. Open this page in a browser with ?setup added to the URL
+     e.g.  https://yourname.github.io/birthday/?setup
+     (or just double-click the file and add ?setup in the address bar)
+  2. Enter the date you met + write your message.
+  3. Click "Lock it" and paste the generated block over the
+     CONFIG object below (search for "PASTE OVER THIS").
+  The message is encrypted with the date as the key, so even
+  someone reading this source code can't see it. 🔒
+  ═══════════════════════════════════════════════════════════════
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Sora:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sky-top:#0f0b0d;
+    --sky-bottom:#060405;
+    --gold:#d9a290;        /* rose gold */
+    --gold-bright:#f2cfc1; /* champagne blush */
+    --rose:#c99aa4;        /* muted mauve */
+    --lilac:#b3a29b;       /* warm greige */
+    --cream:#f4ece7;
+    --muted:#9b8d89;
+    --card:#171113E6;
+    --line:#2e2426;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:'Sora',sans-serif;
+    color:var(--cream);
+    background:linear-gradient(180deg,var(--sky-top) 0%,var(--sky-bottom) 100%);
+    overflow-x:hidden;
+    min-height:100vh;
+  }
+  #sky{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+  .balloons{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+  .balloon{
+    position:absolute;bottom:-140px;width:52px;height:64px;border-radius:50% 50% 48% 52%/58% 58% 42% 42%;
+    animation:floatUp linear infinite;opacity:.7;
+  }
+  .balloon::before{ /* knot */
+    content:"";position:absolute;left:50%;bottom:-7px;transform:translateX(-50%);
+    border:5px solid transparent;border-top:8px solid inherit;
+    border-top-color:inherit;width:0;height:0;filter:brightness(.85);
+  }
+  .balloon::after{ /* string */
+    content:"";position:absolute;left:50%;bottom:-64px;width:1px;height:58px;
+    background:linear-gradient(180deg,rgba(255,244,228,.5),transparent);
+  }
+  @keyframes floatUp{
+    0%{transform:translateY(0) rotate(-3deg)}
+    50%{transform:translateY(-58vh) rotate(4deg)}
+    100%{transform:translateY(-120vh) rotate(-2deg)}
+  }
+  main{position:relative;z-index:2;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 20px;text-align:center}
+  .scene{width:100%;max-width:640px;animation:fadeIn 1.2s ease both}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  .hidden{display:none !important}
+
+  .eyebrow{
+    font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:var(--muted);
+    margin-bottom:22px;animation:fadeIn 1s .2s ease both;
+  }
+  h1{
+    font-family:'Fraunces',serif;font-weight:340;font-size:clamp(30px,6vw,46px);
+    color:var(--cream);line-height:1.15;animation:fadeIn 1s .45s ease both;
+  }
+  .name{
+    display:block;font-family:'Fraunces',serif;font-style:italic;font-weight:560;
+    font-size:clamp(72px,17vw,148px);line-height:1.05;margin-top:6px;
+    background:linear-gradient(120deg,var(--gold-bright),var(--gold) 48%,#b98a92);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    text-shadow:0 0 60px rgba(217,162,144,.16);
+    animation:fadeIn 1.1s .7s ease both;
+  }
+
+  .gate{
+    margin:56px auto 0;max-width:420px;background:var(--card);
+    border:1px solid var(--line);border-radius:18px;padding:30px 26px 26px;
+    backdrop-filter:blur(6px);animation:fadeIn 1.1s 1.15s ease both;
+  }
+  .gate p.lead{font-size:15px;line-height:1.6;color:var(--cream)}
+  .gate p.hint{font-family:'Fraunces',serif;font-style:italic;font-size:19px;color:var(--gold);margin-top:8px}
+  .date-row{display:flex;gap:10px;justify-content:center;margin:22px 0 6px}
+  .date-row input{
+    width:74px;padding:13px 0;text-align:center;font-family:'Sora',sans-serif;font-size:19px;
+    color:var(--cream);background:#110c0e;border:1px solid var(--line);border-radius:12px;outline:none;
+    transition:border-color .2s, box-shadow .2s;
+  }
+  .date-row input.yyyy{width:96px}
+  .date-row input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(217,162,144,.14)}
+  .date-row input::placeholder{color:#6e5f5c}
+  .gate button, .setup button{
+    margin-top:16px;width:100%;padding:14px;border:none;border-radius:12px;cursor:pointer;
+    font-family:'Sora',sans-serif;font-size:15px;font-weight:600;letter-spacing:.02em;
+    color:#2a1512;background:linear-gradient(120deg,var(--gold-bright),var(--gold));
+    transition:transform .15s, filter .15s;
+  }
+  .gate button:hover, .setup button:hover{filter:brightness(1.06)}
+  .gate button:active{transform:scale(.98)}
+  .gate button:focus-visible, .date-row input:focus-visible{outline:2px solid var(--gold-bright);outline-offset:2px}
+  .error{min-height:22px;margin-top:12px;font-size:13.5px;color:var(--rose)}
+  .shake{animation:shake .45s ease}
+  @keyframes shake{
+    10%,90%{transform:translateX(-2px)}20%,80%{transform:translateX(3px)}
+    30%,70%{transform:translateX(-5px)}40%,60%{transform:translateX(5px)}50%{transform:translateX(-4px)}
+  }
+
+  /* ── Scene 2: the letter ── */
+  .letter{
+    margin:0 auto;max-width:560px;background:var(--card);border:1px solid var(--line);
+    border-radius:20px;padding:44px 36px;text-align:left;backdrop-filter:blur(6px);
+    box-shadow:0 30px 80px rgba(0,0,0,.45);
+  }
+  .letter .eyebrow{margin-bottom:14px}
+  .letter h2{
+    font-family:'Fraunces',serif;font-style:italic;font-weight:480;
+    font-size:clamp(30px,6vw,42px);color:var(--gold);margin-bottom:22px;
+  }
+  .letter .msg{font-size:16px;line-height:1.85;color:var(--cream);white-space:pre-wrap}
+  .letter .heart{margin-top:28px;text-align:center;font-size:26px;animation:pulse 2.4s ease-in-out infinite}
+  @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.18)}}
+
+  /* ── Setup mode ── */
+  .setup{max-width:560px;margin:0 auto;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:32px 28px}
+  .setup h2{font-family:'Fraunces',serif;font-weight:480;color:var(--gold);margin-bottom:6px}
+  .setup p{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:16px}
+  .setup label{display:block;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:16px 0 8px}
+  .setup textarea{
+    width:100%;min-height:180px;padding:14px;font-family:'Sora',sans-serif;font-size:15px;line-height:1.7;
+    color:var(--cream);background:#110c0e;border:1px solid var(--line);border-radius:12px;outline:none;resize:vertical;
+  }
+  .setup textarea:focus{border-color:var(--gold)}
+  .setup pre{
+    margin-top:18px;padding:16px;background:#0a0708;border:1px solid var(--line);border-radius:12px;
+    font-size:11.5px;line-height:1.6;color:#e8d6c6;overflow-x:auto;white-space:pre-wrap;word-break:break-all;
+  }
+  @media (prefers-reduced-motion: reduce){
+    .balloon,.letter .heart,.scene,.eyebrow,h1,.name,.gate{animation:none}
+  }
+</style>
+</head>
+<body>
+<canvas id="sky" aria-hidden="true"></canvas>
+<div class="balloons" aria-hidden="true" id="balloons"></div>
+
+<main>
+  <!-- ── SCENE 1 ── -->
+  <section class="scene" id="scene1">
+    <p class="eyebrow">Oficialmente es tu día</p>
+    <h1>Feliz cumpleaños,<span class="name" id="bigName">Nicole</span></h1>
+
+    <div class="gate" id="gate">
+      <p class="lead">Queda una sorpresa más bajo llave.<br>La llave es una fecha que ya sabes de memoria:</p>
+      <p class="hint">la fecha que yo nunca olvidaría</p>
+      <div class="date-row">
+        <input id="dd" class="dd" inputmode="numeric" maxlength="2" placeholder="DD" aria-label="Día">
+        <input id="mm" class="mm" inputmode="numeric" maxlength="2" placeholder="MM" aria-label="Mes">
+        <input id="yyyy" class="yyyy" inputmode="numeric" maxlength="4" placeholder="AAAA" aria-label="Año">
+      </div>
+      <button id="unlockBtn">Abrir 🔑</button>
+      <p class="error" id="error" role="alert"></p>
+    </div>
+  </section>
+
+  <!-- ── SCENE 2 ── -->
+  <section class="scene hidden" id="scene2">
+    <div class="letter">
+      <p class="eyebrow">Encontraste la llave</p>
+      <h2 id="letterTitle">Para ti, Nicole</h2>
+      <div class="msg" id="msg"></div>
+      <div class="heart">🤍</div>
+    </div>
+  </section>
+
+  <!-- ── SETUP MODE (only shows with ?setup in URL) ── -->
+  <section class="scene hidden" id="setupScene">
+    <div class="setup">
+      <h2>Setup mode</h2>
+      <p>Enter the real date and your real message, click <strong>Lock it</strong>, then paste the generated block over the <code>CONFIG</code> object in this file's source. The message gets encrypted with the date as the key — it will not appear anywhere in the code.</p>
+      <label>The date you met (day first — DD/MM/YYYY, same order she'll type it)</label>
+      <div class="date-row" style="justify-content:flex-start">
+        <input id="s_dd" class="dd" inputmode="numeric" maxlength="2" placeholder="DD" aria-label="Day">
+        <input id="s_mm" class="mm" inputmode="numeric" maxlength="2" placeholder="MM" aria-label="Month">
+        <input id="s_yyyy" class="yyyy" inputmode="numeric" maxlength="4" placeholder="YYYY" aria-label="Year">
+      </div>
+      <label>Your message to her</label>
+      <textarea id="s_msg" placeholder="Write it from the heart. Line breaks are kept exactly as you type them."></textarea>
+      <button id="lockBtn">Lock it 🔒</button>
+      <pre id="s_out" class="hidden"></pre>
+    </div>
+  </section>
+</main>
+
+<script>
+/* ════════════════ PASTE OVER THIS after running ?setup ════════════════ */
+const CONFIG = {
+  name: "Nicole",
+  dateHash: "a78e11d7f2941db592bc630165789f97d73554cd5d2b55dbffea7cbca574410c",
+  salt: "jgNit3/XV4EbpAkpzVefYA==",
+  iv: "DqzsmqsPJMCrcSQ1",
+  data: "cm+GCoYjgnMzCNOkKEanyKhU6EZndk3Vlk7fUG7w50Mw108oJlsqagraxx0rx/NOr5i7RWUl3cl2aOCGJoNa8/p+9aVzK6mqYsyLfNDnXm1FKiFf2n8K6eKZpCXjnpHfculjjK7y2JVTMoYHo0iNVnm+YwVqn8WI3jUAWSP8qtSVOGH65qh50M1eoxcoKkMt7AJvRAapTKYOialvjU1+SuRYIJ2Woc1trwbgJt+GF7qq7NpAgDsZa9tKxWvlof3XLKCbrNLthATOHWySVhWbmrRr0yy5SHDJAm4gTSaGllSMkDpPcfij3jckaBQwQWsuD5nAeCW+CQrWnSWUex8paqvS0/WVWBQMcCmTrpcTgHbFry0C6HJAmQ=="
+};
+/* ═══════════════════════════════════════════════════════════════════════ */
+
+const $ = id => document.getElementById(id);
+const enc = new TextEncoder(), dec = new TextDecoder();
+const b64e = buf => btoa(String.fromCharCode(...new Uint8Array(buf)));
+const b64d = str => Uint8Array.from(atob(str), c => c.charCodeAt(0));
+const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+async function sha256Hex(text){
+  const h = await crypto.subtle.digest('SHA-256', enc.encode(text));
+  return [...new Uint8Array(h)].map(b => b.toString(16).padStart(2,'0')).join('');
+}
+async function deriveKey(pass, salt){
+  const km = await crypto.subtle.importKey('raw', enc.encode(pass), 'PBKDF2', false, ['deriveKey']);
+  return crypto.subtle.deriveKey(
+    {name:'PBKDF2', salt, iterations:100000, hash:'SHA-256'},
+    km, {name:'AES-GCM', length:256}, false, ['encrypt','decrypt']
+  );
+}
+function normDate(dd, mm, yyyy){
+  return dd.padStart(2,'0') + mm.padStart(2,'0') + yyyy; // DDMMYYYY
+}
+
+/* ── the gate ── */
+const attempts = {n:0};
+const gentle = [
+  "Mmm, ese no es el día en que mi vida mejoró. Intenta de nuevo 🤍",
+  "Casi… piensa en el primerísimo día.",
+  "¡No! Pista: yo lo recuerdo perfecto. 😌"
+];
+async function tryUnlock(){
+  const dd = $('dd').value.trim(), mm = $('mm').value.trim(), yyyy = $('yyyy').value.trim();
+  if(!(dd && mm && yyyy.length === 4)){ showError("Completa los tres: DD / MM / AAAA."); return; }
+  const guess = normDate(dd, mm, yyyy);
+  if(await sha256Hex(guess) !== CONFIG.dateHash){
+    showError(gentle[attempts.n++ % gentle.length]);
+    return;
+  }
+  const key = await deriveKey(guess, b64d(CONFIG.salt));
+  const plain = await crypto.subtle.decrypt({name:'AES-GCM', iv: b64d(CONFIG.iv)}, key, b64d(CONFIG.data));
+  $('msg').textContent = dec.decode(plain);
+  $('scene1').classList.add('hidden');
+  $('scene2').classList.remove('hidden');
+  grandFinale();
+}
+function showError(text){
+  $('error').textContent = text;
+  const g = $('gate');
+  g.classList.remove('shake'); void g.offsetWidth; g.classList.add('shake');
+}
+$('unlockBtn').addEventListener('click', tryUnlock);
+[['dd',2,'mm'],['mm',2,'yyyy'],['yyyy',4,null]].forEach(([id,len,next])=>{
+  const el = $(id);
+  el.addEventListener('input', ()=>{
+    el.value = el.value.replace(/\D/g,'');
+    if(el.value.length >= len && next) $(next).focus();
+  });
+  el.addEventListener('keydown', e => { if(e.key === 'Enter') tryUnlock(); });
+});
+$('bigName').textContent = CONFIG.name;
+$('letterTitle').textContent = 'Para ti, ' + CONFIG.name;
+
+/* ── setup mode ── */
+if(location.search.includes('setup')){
+  $('scene1').classList.add('hidden');
+  $('setupScene').classList.remove('hidden');
+  $('lockBtn').addEventListener('click', async ()=>{
+    const dd = $('s_dd').value.trim(), mm = $('s_mm').value.trim(), yyyy = $('s_yyyy').value.trim();
+    const message = $('s_msg').value;
+    if(!(dd && mm && yyyy.length === 4 && message.trim())){ alert('Fill in the date and the message first.'); return; }
+    const date = normDate(dd, mm, yyyy);
+    const salt = crypto.getRandomValues(new Uint8Array(16));
+    const iv = crypto.getRandomValues(new Uint8Array(12));
+    const key = await deriveKey(date, salt);
+    const ct = await crypto.subtle.encrypt({name:'AES-GCM', iv}, key, enc.encode(message));
+    const out =
+`const CONFIG = {
+  name: ${JSON.stringify(CONFIG.name)},
+  dateHash: "${await sha256Hex(date)}",
+  salt: "${b64e(salt)}",
+  iv: "${b64e(iv)}",
+  data: "${b64e(ct)}"
+};`;
+    const pre = $('s_out');
+    pre.textContent = out;
+    pre.classList.remove('hidden');
+    try{ await navigator.clipboard.writeText(out); pre.textContent = "✓ Copied to clipboard!\n\n" + out; }catch(e){}
+  });
+}
+
+/* ════════════════ fireworks + confetti + stars canvas ════════════════ */
+const canvas = $('sky'), ctx = canvas.getContext('2d');
+let W, H, stars = [];
+function resize(){
+  W = canvas.width = innerWidth * devicePixelRatio;
+  H = canvas.height = innerHeight * devicePixelRatio;
+  canvas.style.width = innerWidth + 'px';
+  canvas.style.height = innerHeight + 'px';
+  stars = Array.from({length: 90}, () => ({
+    x: Math.random()*W, y: Math.random()*H*0.8,
+    r: (Math.random()*1.3 + .3) * devicePixelRatio,
+    tw: Math.random()*Math.PI*2, sp: .008 + Math.random()*.02
+  }));
+}
+addEventListener('resize', resize); resize();
+
+const PALETTE = ['#d9a290','#f2cfc1','#c99aa4','#f4ece7'];
+let rockets = [], sparks = [], confetti = [];
+let intensity = 1; // grandFinale bumps this
+
+function launchRocket(){
+  const x = W*(0.15 + Math.random()*0.7);
+  rockets.push({
+    x, y: H, vx: (Math.random()-.5)*1.2*devicePixelRatio,
+    vy: -(H*0.011 + Math.random()*H*0.004),
+    target: H*(0.18 + Math.random()*0.3),
+    color: PALETTE[Math.random()*PALETTE.length|0]
+  });
+}
+function explode(x, y, color){
+  const n = 60 + Math.random()*40;
+  for(let i=0;i<n;i++){
+    const a = Math.random()*Math.PI*2, s = (Math.random()*5.5 + 1.5)*devicePixelRatio;
+    sparks.push({
+      x, y, vx: Math.cos(a)*s, vy: Math.sin(a)*s,
+      life: 1, decay: .008 + Math.random()*.012,
+      color: Math.random() < .75 ? color : PALETTE[Math.random()*PALETTE.length|0]
+    });
+  }
+}
+function dropConfetti(n){
+  for(let i=0;i<n;i++){
+    confetti.push({
+      x: Math.random()*W, y: -20,
+      vy: (1 + Math.random()*1.8)*devicePixelRatio,
+      sway: Math.random()*Math.PI*2, swaySp: .02 + Math.random()*.04,
+      w: (4 + Math.random()*5)*devicePixelRatio, h: (7 + Math.random()*7)*devicePixelRatio,
+      rot: Math.random()*Math.PI, rotSp: (Math.random()-.5)*.15,
+      color: PALETTE[Math.random()*PALETTE.length|0]
+    });
+  }
+}
+let lastRocket = 0, lastConfetti = 0;
+function frame(t){
+  ctx.clearRect(0,0,W,H);
+
+  // stars
+  for(const s of stars){
+    s.tw += s.sp;
+    ctx.globalAlpha = .3 + Math.abs(Math.sin(s.tw))*.5;
+    ctx.fillStyle = '#e9ddd6';
+    ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI*2); ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+
+  if(!reducedMotion){
+    if(t - lastRocket > (1400/intensity) + Math.random()*700){ launchRocket(); lastRocket = t; }
+    if(t - lastConfetti > 520/intensity){ dropConfetti(1*intensity|0 || 1); lastConfetti = t; }
+
+    // rockets
+    for(let i=rockets.length-1;i>=0;i--){
+      const r = rockets[i];
+      r.x += r.vx; r.y += r.vy; r.vy += .04*devicePixelRatio;
+      ctx.fillStyle = r.color;
+      ctx.beginPath(); ctx.arc(r.x, r.y, 2.2*devicePixelRatio, 0, Math.PI*2); ctx.fill();
+      if(r.y <= r.target || r.vy > -1){ explode(r.x, r.y, r.color); rockets.splice(i,1); }
+    }
+    // sparks
+    for(let i=sparks.length-1;i>=0;i--){
+      const p = sparks[i];
+      p.x += p.vx; p.y += p.vy; p.vy += .05*devicePixelRatio;
+      p.vx *= .985; p.vy *= .985; p.life -= p.decay;
+      if(p.life <= 0){ sparks.splice(i,1); continue; }
+      ctx.globalAlpha = Math.max(p.life, 0);
+      ctx.fillStyle = p.color;
+      ctx.beginPath(); ctx.arc(p.x, p.y, 2*devicePixelRatio*p.life + .5, 0, Math.PI*2); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+    // confetti
+    for(let i=confetti.length-1;i>=0;i--){
+      const c = confetti[i];
+      c.sway += c.swaySp; c.rot += c.rotSp;
+      c.x += Math.sin(c.sway)*1.2*devicePixelRatio; c.y += c.vy;
+      if(c.y > H + 30){ confetti.splice(i,1); continue; }
+      ctx.save();
+      ctx.translate(c.x, c.y); ctx.rotate(c.rot);
+      ctx.fillStyle = c.color;
+      ctx.globalAlpha = .9;
+      ctx.fillRect(-c.w/2, -c.h/2, c.w, c.h);
+      ctx.restore();
+    }
+    ctx.globalAlpha = 1;
+  }
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+
+function grandFinale(){
+  if(reducedMotion) return;
+  intensity = 2.5;
+  for(let i=0;i<5;i++) setTimeout(launchRocket, i*180);
+  dropConfetti(60);
+  setTimeout(()=>{ intensity = 1.2; }, 6000);
+}
+
+/* balloons */
+const BALLOON_COLORS = [
+  'radial-gradient(circle at 35% 30%, #f2cfc1, #d9a290 60%, #a9705f)',
+  'radial-gradient(circle at 35% 30%, #ead4d9, #c99aa4 60%, #96707b)',
+  'radial-gradient(circle at 35% 30%, #f7ede4, #e8d6c6 60%, #b39c86)',
+  'radial-gradient(circle at 35% 30%, #faf4ef, #f4ece7 60%, #c6b6ac)'
+];
+if(!reducedMotion){
+  const holder = $('balloons');
+  for(let i=0;i<5;i++){
+    const b = document.createElement('div');
+    b.className = 'balloon';
+    b.style.background = BALLOON_COLORS[i % BALLOON_COLORS.length];
+    b.style.left = (5 + Math.random()*90) + '%';
+    b.style.animationDuration = (13 + Math.random()*9) + 's';
+    b.style.animationDelay = (Math.random()*12) + 's';
+    b.style.transform = `scale(${.7 + Math.random()*.6})`;
+    holder.appendChild(b);
+  }
+}
+</script>
+</body>
+</html>
